@@ -2,19 +2,20 @@ import functions
 import FreeSimpleGUI as sg
 import time
 
-sg.theme('Dark Blue 3')
+sg.theme('Dark Blue 2')
 clock = sg.Text('', key='clock')
 
 label = sg.Text('Type in a To-do:')
 input_box = sg.Input(tooltip = 'Enter todo', key = 'todo')
 add_button = sg.Button('Add',key = 'Add', size = 10)
 
-list_box = sg.Listbox(values=functions.get_todos(), key = 'todos',
-                      enable_events = True, size =[45,10])
-edit_button = sg.Button('Edit',key = 'Edit',size = 8)
+
+list_box = sg.Listbox(values=functions.get_todos(), key = 'todos',enable_events = True, size =[45,10])
+refresh_button = sg.Button('Refresh', key ='Refresh',size = 8)
+edit_button = sg.Button('Edit',key ='Edit',size = 8)
 delete_button = sg.Button('Delete',size = 8)
-right_column_buttons = [[edit_button],
-                        [delete_button]]
+
+right_column_buttons = [[refresh_button],[edit_button],[delete_button]]
 right_buttons = sg.Column(right_column_buttons)
 exit_button = sg.Button('Exit',size = 8)
 
@@ -85,6 +86,13 @@ while True:
                  sg.popup('Please select a To-do first', font=('Helvetica', 9))
              except ValueError:
                  pass
+        case "Refresh":
+             todos = functions.get_todos()
+             window['todo'].update(value='')
+             if event == 'Refresh':
+                window['Add'].update(disabled=False)
+                window['todos'].update(values=todos)
+
     if event == sg.WINDOW_CLOSED or event == 'Exit':
         break
 window.close()
